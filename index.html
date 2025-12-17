@@ -1,0 +1,141 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+ 
+<head> 
+    <meta charset="UTF-8"> 
+    <title>Two Player Dice Game</title> 
+    <style> 
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #1e1e1e; 
+            color: #fff; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+        } 
+ 
+        .game { 
+            background: #2c2c2c; 
+            padding: 25px; 
+            border-radius: 10px; 
+            width: 320px; 
+            text-align: center; 
+        } 
+ 
+        .players { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 15px; 
+        } 
+ 
+        .player { 
+            width: 45%; 
+            padding: 10px; 
+            border-radius: 6px; 
+            background: #444; 
+        } 
+ 
+        .active { 
+            border: 2px solid #ff9800; 
+        } 
+ 
+        .dice { 
+            font-size: 70px; 
+            margin: 15px 0; 
+        } 
+ 
+        button { 
+            padding: 10px 20px; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            background: #ff9800; 
+            font-size: 16px; 
+        } 
+ 
+        button:disabled { 
+            background: gray; 
+            cursor: not-allowed; 
+        } 
+ 
+        .message { 
+            margin-top: 10px; 
+            font-weight: bold; 
+        } 
+    </style> 
+</head> 
+ 
+<body> 
+ 
+    <div class="game"> 
+        <h2>🎲 Two Player Dice Game</h2> 
+ 
+        <div class="players"> 
+            <div class="player active" id="p1"> 
+                <h3>Player 1</h3> 
+                <p>Score: <span id="score1">0</span></p> 
+            </div> 
+ 
+            <div class="player" id="p2"> 
+                <h3>Player 2</h3> 
+                <p>Score: <span id="score2">0</span></p> 
+            </div> 
+        </div> 
+ 
+        <div class="dice" id="dice">🎲</div> 
+ 
+        <button onclick="rollDice()" id="rollBtn">Roll Dice</button> 
+ 
+        <p class="message" id="message">Player 1's Turn</p> 
+    </div> 
+ 
+    <script> 
+        let score1 = 0; 
+        let score2 = 0; 
+        let currentPlayer = 1; 
+        const winningScore = 20; 
+ 
+        const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"]; 
+ 
+        function rollDice() { 
+            let dice = Math.floor(Math.random() * 6) + 1; 
+            document.getElementById("dice").innerText = diceFaces[dice - 1]; 
+ 
+            if (currentPlayer === 1) { 
+                score1 += dice; 
+                document.getElementById("score1").innerText = score1; 
+                if (score1 >= winningScore) { 
+                    endGame("🎉 Player 1 Wins!"); 
+                    return; 
+                } 
+                switchPlayer(2); 
+            } else { 
+                score2 += dice; 
+                document.getElementById("score2").innerText = score2; 
+                if (score2 >= winningScore) { 
+                    endGame("🎉 Player 2 Wins!"); 
+                    return; 
+                } 
+                switchPlayer(1); 
+            } 
+        } 
+ 
+        function switchPlayer(player) { 
+            currentPlayer = player; 
+            document.getElementById("p1").classList.toggle("active"); 
+            document.getElementById("p2").classList.toggle("active"); 
+            document.getElementById("message").innerText = 
+                `Player ${currentPlayer}'s Turn`; 
+        } 
+ 
+        function endGame(msg) { 
+            document.getElementById("message").innerText = msg; 
+            document.getElementById("rollBtn").disabled = true; 
+        } 
+    </script> 
+ 
+</body> 
+ 
+</html> 
+ 
